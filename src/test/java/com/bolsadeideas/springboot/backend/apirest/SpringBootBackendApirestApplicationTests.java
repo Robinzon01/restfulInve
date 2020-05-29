@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.bolsadeideas.springboot.backend.apirest.models.entity.Usuario;
-import com.bolsadeideas.springboot.backend.apirest.models.entity.Role;
-import com.bolsadeideas.springboot.backend.apirest.models.services.IRolService;
-import com.bolsadeideas.springboot.backend.apirest.models.services.IUsuarioService;
+import com.cdsi.backend.inve.models.entity.Role;
+import com.cdsi.backend.inve.models.entity.Usuario;
+import com.cdsi.backend.inve.models.services.IRolService;
+import com.cdsi.backend.inve.models.services.IUsuarioService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
