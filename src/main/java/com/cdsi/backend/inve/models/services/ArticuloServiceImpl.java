@@ -8,33 +8,33 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.cdsi.pven.app.model.Articulo;
-import com.cdsi.pven.app.model.IdArticulo;
-import com.cdsi.pven.app.repository.IArticuloRepository;
-import com.cdsi.pven.app.service.IArticuloService;
+import com.cdsi.backend.inve.models.dao.IArticuloDao;
+import com.cdsi.backend.inve.models.entity.Articulo;
+import com.cdsi.backend.inve.models.entity.IdArticulo;
+
 
 @Service
 public class ArticuloServiceImpl implements IArticuloService {
 	
 	@Autowired
-	private IArticuloRepository artiRepo;
+	private IArticuloDao artiDao;
 
 	@Override
 	public List<Articulo> getAllArticulos() {
 		List<Articulo> objAs = new ArrayList<Articulo>();
-		artiRepo.findAll().iterator().forEachRemaining(objAs::add);
+		artiDao.findAll().iterator().forEachRemaining(objAs::add);
 		return objAs;
 	}
 
 	@Override
 	public Articulo createArticulo(Articulo articulo) {
-		return artiRepo.save(articulo);
+		return artiDao.save(articulo);
 	}
 
 	@Override
-	public Articulo updateArticulo(String cia,String id, Articulo articulo) {
+	public Articulo updateArticulo(IdArticulo objIdAr, Articulo articulo) {
 		// TODO Auto-generated method stub
-		Articulo objA = findArticulo(cia, id);
+		Articulo objA = findArticulo(objIdAr);
 		objA.setIdArti (articulo.getIdArti());
 		objA.setCatalogo (articulo.getCatalogo());
 		objA.setLinea( articulo.getLinea() );
@@ -56,44 +56,43 @@ public class ArticuloServiceImpl implements IArticuloService {
 		objA.setImpVen(articulo.getImpVen());
 		objA.setTipoAfectacion(articulo.getTipoAfectacion());
 		
-		return objA;
+		return artiDao.save(objA);
 	}
 
 	@Override
-	public void deleteArticulo(String cia,String id) {
+	public void deleteArticulo(IdArticulo objIdAr) {
 		// TODO Auto-generated method stub
-		artiRepo.delete( findArticulo(cia, id) );
+		artiDao.delete(findArticulo(objIdAr));
 	}
 	
 	@Override
-	public Articulo findArticulo(String cia,String id) {
-		IdArticulo objIdArti = new IdArticulo(cia,id);
-		return artiRepo.findByIdArti(objIdArti);
+	public Articulo findArticulo(IdArticulo objIdAr) {
+		return artiDao.findByIdArti(objIdAr);
 	}
 
 
 	@Override
 	public Page<Articulo> findAll(Pageable pageable,String cia) {
 		// TODO Auto-generated method stub
-		return artiRepo.findAll(pageable,cia);
+		return artiDao.findAll(pageable,cia);
 	}
 
 	@Override
 	public Page<Articulo> findAllArti(Pageable pageable, String cia, String codigo) {
 		// TODO Auto-generated method stub
-		return artiRepo.findAllArti(pageable, cia, codigo);
+		return artiDao.findAllArti(pageable, cia, codigo);
 	}
 	
 	@Override
 	public List<Articulo> findCodArti(String cia, String codigo) {
 		// TODO Auto-generated method stub
-		return artiRepo.findCodigoArticulo(cia, codigo);
+		return artiDao.findCodigoArticulo(cia, codigo);
 	}
 
 	@Override
 	public List<Articulo> likeDescripArti(String cia, String descrip) {
 		// TODO Auto-generated method stub
-		return artiRepo.findDescripcionArticulo(cia, descrip);
+		return artiDao.findDescripcionArticulo(cia, descrip);
 	}
 
 

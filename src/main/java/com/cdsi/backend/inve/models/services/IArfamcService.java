@@ -13,7 +13,7 @@ public interface IArfamcService {
 	Arfamc createArfamc(Arfamc objArfamc);
 	Arfamc updateArfamct(String cia, Arfamc objArf);
 	void deleteArfamc(String cia);
-	//BUSCAMOS UN ARTICULO
+	//BUSCAMOS UNA COMPAÑIA
 	Arfamc findArfamc(String cia);
 	//PAGINACION
 	Page<Arfamc> findAll(Pageable pageable);

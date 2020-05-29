@@ -8,56 +8,52 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.cdsi.pven.app.model.Arincat;
-import com.cdsi.pven.app.model.IdArincat;
-import com.cdsi.pven.app.repository.IArincatRepository;
-import com.cdsi.pven.app.service.IArincatService;
+import com.cdsi.backend.inve.models.dao.IArincatDao;
+import com.cdsi.backend.inve.models.entity.Arincat;
+import com.cdsi.backend.inve.models.entity.IdArincat;
 
 @Service
 public class ArincatServiceImpl implements IArincatService {
 	
 	@Autowired
-	private IArincatRepository arinRepo;
+	private IArincatDao arinDao;
 
 	@Override
 	public List<Arincat> getAllArincats() {
 		List<Arincat> objAs = new ArrayList<Arincat>();
-		arinRepo.findAll().iterator().forEachRemaining(objAs::add);
+		arinDao.findAll().iterator().forEachRemaining(objAs::add);
 		return objAs;
 	}
 
 	@Override
 	public Arincat createArincat(Arincat objAri) {
 		// TODO Auto-generated method stub
-		return arinRepo.save(objAri);
+		return arinDao.save(objAri);
 	}
 
 	@Override
-	public Arincat updateArincat(String cia, String tipo, String clase, String codigo, Arincat objArin) {
-		Arincat objA = findArincat(cia, tipo, clase, codigo);
+	public Arincat updateArincat(IdArincat objIdArin, Arincat objArin) {
+		Arincat objA = findArincat(objIdArin);
 		objA.setIdArinc(objArin.getIdArinc());
 		objA.setDescripcion(objArin.getDescripcion());
 		objA.setEstado(objArin.getEstado());
-		
-		arinRepo.save(objA);
-		return objA;
+		return arinDao.save(objA);
 	}
 
 	@Override
-	public void deleteArincat(String cia, String tipo, String clase, String codigo) {
-		arinRepo.delete(findArincat(cia, tipo, clase, codigo));
+	public void deleteArincat(IdArincat objIdArin) {
+		arinDao.delete(findArincat(objIdArin));
 	}
 
 	@Override
-	public Arincat findArincat(String cia, String tipo, String clase, String codigo) {
-		IdArincat objIdArin = new IdArincat(cia, tipo, clase, codigo);
-		return arinRepo.findByIdArinc(objIdArin);
+	public Arincat findArincat(IdArincat objIdArin) {
+		return arinDao.findByIdArinc(objIdArin);
 	}
 
 	@Override
 	public Page<Arincat> findAll(Pageable pageable, String cia) {
 		// TODO Auto-generated method stub
-		return arinRepo.findAll(pageable, cia);
+		return arinDao.findAll(pageable, cia);
 	}
 
 }

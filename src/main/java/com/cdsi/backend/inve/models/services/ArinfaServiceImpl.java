@@ -8,58 +8,56 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.cdsi.pven.app.model.Arinfa;
-import com.cdsi.pven.app.model.IdArinfa;
-import com.cdsi.pven.app.repository.IArinfaRepository;
-import com.cdsi.pven.app.service.IArinfaService;
+import com.cdsi.backend.inve.models.dao.IArinfaDao;
+import com.cdsi.backend.inve.models.entity.Arinfa;
+import com.cdsi.backend.inve.models.entity.IdArinfa;
 
 @Service
 public class ArinfaServiceImpl implements IArinfaService {
 
 	@Autowired
-	private IArinfaRepository afRepo;
+	private IArinfaDao afDao;
 
 	@Override
 	public List<Arinfa> getAllArinfas() {
 		// TODO Auto-generated method stub
 		List<Arinfa> objAfs = new ArrayList<Arinfa>();
-		afRepo.findAll().iterator().forEachRemaining(objAfs::add);
+		afDao.findAll().iterator().forEachRemaining(objAfs::add);
 		return objAfs;
 	}
 
 	@Override
 	public Arinfa createArinfa(Arinfa objAf) {
 		// TODO Auto-generated method stub
-		return afRepo.save(objAf);
+		return afDao.save(objAf);
 	}
 
 	@Override
-	public Arinfa updateArinfa(String cia, String tipo, String clase, String categoria, String codigo, Arinfa objAf) {
+	public Arinfa updateArinfa(IdArinfa objIdAf, Arinfa objAf) {
 		// TODO Auto-generated method stub
-		Arinfa objA = findArinfa(cia, tipo, clase, categoria, codigo);
+		Arinfa objA = findArinfa(objIdAf);
 		objA.setIdArfa(objAf.getIdArfa());
 		objA.setDescripcion(objAf.getDescripcion());
 		objA.setEstado(objAf.getEstado());
 		
-		return objA;
+		return afDao.save(objA);
 	}
 
 	@Override
-	public void deleteArinfa(String cia, String tipo, String clase, String categoria, String codigo) {
+	public void deleteArinfa(IdArinfa objIdAf) {
 		// TODO Auto-generated method stub
-		afRepo.delete(findArinfa(cia, tipo, clase, categoria, codigo));
+		afDao.delete(findArinfa(objIdAf));
 	}
 
 	@Override
-	public Arinfa findArinfa(String cia, String tipo, String clase, String categoria, String codigo) {
-		IdArinfa objAf = new IdArinfa(cia, tipo, clase, categoria, codigo);
-		return  afRepo.findByIdArfa(objAf);
+	public Arinfa findArinfa(IdArinfa objIdAf) {		
+		return  afDao.findByIdArfa(objIdAf);
 	}
 
 	@Override
 	public Page<Arinfa> findAll(Pageable pageable, String cia) {
 		// TODO Auto-generated method stub
-		return afRepo.findAll(pageable, cia);
+		return afDao.findAll(pageable, cia);
 	}
 	
 

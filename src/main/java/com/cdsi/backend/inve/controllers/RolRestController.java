@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cdsi.backend.inve.models.entity.Role;
 import com.cdsi.backend.inve.models.services.IRolService;
 
-
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 @RestController
 @RequestMapping("/api/rol")

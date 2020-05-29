@@ -37,7 +37,7 @@ public class LineaServiceImpl implements ILineaService {
 		// objL.setIdLinea(objLine.getIdLinea());
 		objLine.setDescripcion(objL.getDescripcion());
 		objLine.setEstado(objL.getEstado());
-		return objLine;
+		return lineaDao.save(objLine);
 	}
 
 	@Override
