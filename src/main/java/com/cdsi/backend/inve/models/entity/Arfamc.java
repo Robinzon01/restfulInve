@@ -24,7 +24,7 @@ public class Arfamc implements Serializable {
 	
 	@Column(name="NO_CLIENTE_ONLINE")
 	private String ruc;
-	
+	/*
 	@Column(name="RAZON_SOCIAL")
 	private String razonSocial;
 	
@@ -33,7 +33,7 @@ public class Arfamc implements Serializable {
 	
 	@Column(name = "CUENTA_DOL")
 	private String cuentaDol;
-
+    */
 	public String getCia() {
 		return cia;
 	}
@@ -65,7 +65,7 @@ public class Arfamc implements Serializable {
 	public void setRuc(String ruc) {
 		this.ruc = ruc;
 	}
-
+    /*
 	public String getRazonSocial() {
 		return razonSocial;
 	}
@@ -89,6 +89,6 @@ public class Arfamc implements Serializable {
 	public void setCuentaDol(String cuentaDol) {
 		this.cuentaDol = cuentaDol;
 	}
-	
+	*/
 	
 }

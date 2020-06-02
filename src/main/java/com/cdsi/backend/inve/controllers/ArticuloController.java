@@ -27,7 +27,7 @@ public class ArticuloController {
   	@GetMapping("/list/page/{cia}/{page}")
   	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
   	public Page<Articulo> pagiArticulos(@PathVariable("cia") String cia, @PathVariable("page") Integer page ){
-  		Pageable pageable = PageRequest.of(page, 15);
+  		Pageable pageable = PageRequest.of(page, 10);
   		return artiServi.findAll(pageable, cia);
   	}
 

@@ -50,11 +50,11 @@ public class ArfamcServiceImpl implements IArfamcService {
 	@Override
 	public Arfamc updateArfamct(String cia, Arfamc objArfa) {
 		Arfamc objA = findArfamc(cia);
-		objA.setCuentaDol(objArfa.getCuentaDol());
-		objA.setCuentaSol(objArfa.getCuentaSol());
+		// objA.setCuentaDol(objArfa.getCuentaDol());
+		// objA.setCuentaSol(objArfa.getCuentaSol());
 		objA.setNombre(objArfa.getNombre());
 		objA.setNombreAno(objArfa.getNombreAno());
-		objA.setRazonSocial(objArfa.getRazonSocial());
+		// objA.setRazonSocial(objArfa.getRazonSocial());
 		objA.setRuc(objArfa.getRuc());
 		return arfamcDao.save(objA);
 	}
