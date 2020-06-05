@@ -72,9 +72,9 @@ public class ArticuloServiceImpl implements IArticuloService {
 
 
 	@Override
-	public Page<Articulo> findAll(Pageable pageable,String cia) {
+	public Page<Articulo> findAll(Pageable pageable,String cia,String cat) {
 		// TODO Auto-generated method stub
-		return artiDao.findAll(pageable,cia);
+		return artiDao.findAll(pageable,cia,cat);
 	}
 
 	@Override
@@ -93,6 +93,26 @@ public class ArticuloServiceImpl implements IArticuloService {
 	public List<Articulo> likeDescripArti(String cia, String descrip) {
 		// TODO Auto-generated method stub
 		return artiDao.findDescripcionArticulo(cia, descrip);
+	}
+
+	@Override
+	public String precioArticulo(String cia, String arti) {
+		return artiDao.precioArtiCia(cia, arti);
+	}
+
+	@Override
+	public String saldoArticulo(String cia, String arti) {
+		return artiDao.saldoArticulo(cia, arti);
+	}
+
+	@Override
+	public String saldoComprometido(String cia, String arti) {
+		return artiDao.saldoComprometido(cia, arti);
+	}
+
+	@Override
+	public Page<Object> pagArtiPrecStock(Pageable pageable, String cia, String cat) {
+		return artiDao.pagArtiPreStock(pageable, cia, cat);
 	}
 
 

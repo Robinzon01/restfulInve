@@ -1,11 +1,9 @@
 package com.cdsi.backend.inve.models.entity;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Arincat implements Serializable {
@@ -17,10 +15,10 @@ public class Arincat implements Serializable {
 	
 	private String descripcion;
 	private String estado;
-	
+	/*
 	@OneToMany(mappedBy = "arincat")
 	private List<Articulo> articulos;
-	
+	*/
 	public IdArincat getIdArinc() {
 		return idArinc;
 	}

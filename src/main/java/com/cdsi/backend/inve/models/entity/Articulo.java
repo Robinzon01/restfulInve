@@ -34,7 +34,6 @@ public class Articulo implements Serializable {
 	})
 	private Catalogo catalogo;
 
-	//private String categoria;
 	@ManyToOne
 	@JoinColumns({
 		@JoinColumn(name = "NO_CIA",referencedColumnName = "NO_CIA", insertable=false, updatable=false),
@@ -44,7 +43,6 @@ public class Articulo implements Serializable {
 	})
 	private Arincat arincat;
 	
-	//private String familia;
 	@ManyToOne
 	@JoinColumns({
 		@JoinColumn(name = "NO_CIA",referencedColumnName = "NO_CIA", insertable=false, updatable=false),
@@ -90,7 +88,41 @@ public class Articulo implements Serializable {
 		
 	@Column(name = "TIPO_AFECTACION")
 	private String tipoAfectacion;
+	/*
+	@Column(name = "STK_MINIMO")
+	private int minino;
+	
+	@Column(name = "STK_MAXIMO")
+	private int maximo;
+	
+	@Column(name = "COSTO_UNI")
+	private Double precio;
+	
+	
+	public Double getPrecio() {
+		return precio;
+	}
 
+	public void setPrecio(Double precio) {
+		this.precio = precio;
+	}
+
+	public int getMinino() {
+		return minino;
+	}
+
+	public void setMinino(int minino) {
+		this.minino = minino;
+	}
+    
+	public int getMaximo() {
+		return maximo;
+	}
+
+	public void setMaximo(int maximo) {
+		this.maximo = maximo;
+	}
+	*/
 	public IdArticulo getIdArti() {
 		return idArti;
 	}

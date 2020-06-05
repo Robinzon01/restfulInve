@@ -26,9 +26,28 @@ public class ArticuloController {
 	//METODO QUE ENVIA UNA PAGINACION DE RGTACDE
   	@GetMapping("/list/page/{cia}/{page}")
   	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
-  	public Page<Articulo> pagiArticulos(@PathVariable("cia") String cia, @PathVariable("page") Integer page ){
-  		Pageable pageable = PageRequest.of(page, 10);
-  		return artiServi.findAll(pageable, cia);
+  	public Page<Object> pagiArticulos(@PathVariable("cia") String cia, @PathVariable("page") Integer page ){
+  		Pageable pageable = PageRequest.of(page, 8);
+  		// return artiServi.findAll(pageable, cia,"1");
+  		return artiServi.pagArtiPrecStock(pageable, cia,"1");
+  	}
+    //METODO QUE NOS DEVUELVE EL PRECIO DEL ARTICULO
+  	@GetMapping("/precio/{cia}/{arti}")
+  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+  	public String precioArticulo(@PathVariable("cia") String cia, @PathVariable("arti") String arti ){
+  		return artiServi.precioArticulo(cia, arti);
+  	}
+    //METODO QUE NOS DEVUELVE EL STOCK DEL ARTICULO
+  	@GetMapping("/stkarti/{cia}/{arti}")
+  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+  	public String saldoArticulo(@PathVariable("cia") String cia, @PathVariable("arti") String arti ){
+  		return artiServi.saldoArticulo(cia, arti);
+  	}
+    //METODO QUE NOS DEVUELVE EL STOCK COMPROMETIDO DEL ARTICULO
+  	@GetMapping("/comparti/{cia}/{arti}")
+  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+  	public String articuloComprometido(@PathVariable("cia") String cia, @PathVariable("arti") String arti ){
+  		return artiServi.saldoComprometido(cia, arti);
   	}
 
 }
