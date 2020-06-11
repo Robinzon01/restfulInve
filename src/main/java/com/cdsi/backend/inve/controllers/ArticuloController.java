@@ -1,5 +1,7 @@
 package com.cdsi.backend.inve.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,14 +25,37 @@ public class ArticuloController {
 	@Autowired
 	private IArticuloService artiServi;
 	
-	//METODO QUE ENVIA UNA PAGINACION DE RGTACDE
+	//METODO QUE NOS PERMITE BUSCAR POR ARTICULO
+  	@GetMapping("/list/desc/{cia}/{desc}")
+  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+  	public List<Articulo> listaArtiDesc(@PathVariable("cia") String cia, @PathVariable("desc") String desc ){
+  		return artiServi.likeDescripArti(cia, desc);
+  	}
+	
+	//METODO QUE ENVIA UNA PAGINACION DE ARTICULO y DESCRIPCION
+  	@GetMapping("/listd/page/{cia}/{desc}/{page}")
+  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+  	public Page<Object> pagiArtiPrecAndDesc(@PathVariable("cia") String cia,@PathVariable("desc") String desc, @PathVariable("page") Integer page ){
+  		Pageable pageable = PageRequest.of(page, 8);
+  		return artiServi.pagArtiPreStockAndDesc(pageable, cia, "1", desc);
+  	}
+  	
+    //METODO QUE ENVIA UNA PAGINACION DE ARTICULO y CODIGO
+  	@GetMapping("/listc/page/{cia}/{cod}/{page}")
+  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+  	public Page<Object> pagiArtiPrecAndCodigo(@PathVariable("cia") String cia,@PathVariable("cod") String cod, @PathVariable("page") Integer page ){
+  		Pageable pageable = PageRequest.of(page, 8);
+  		return artiServi.pagArtiPreStockAndCodigo(pageable, cia, "1", cod);
+  	}
+  	
+     //METODO QUE ENVIA UNA PAGINACION DE ARTICULO
   	@GetMapping("/list/page/{cia}/{page}")
   	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
   	public Page<Object> pagiArticulos(@PathVariable("cia") String cia, @PathVariable("page") Integer page ){
   		Pageable pageable = PageRequest.of(page, 8);
-  		// return artiServi.findAll(pageable, cia,"1");
   		return artiServi.pagArtiPrecStock(pageable, cia,"1");
   	}
+  	
     //METODO QUE NOS DEVUELVE EL PRECIO DEL ARTICULO
   	@GetMapping("/precio/{cia}/{arti}")
   	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})

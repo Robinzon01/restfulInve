@@ -24,13 +24,23 @@ public interface IArticuloDao extends PagingAndSortingRepository<Articulo,IdArti
 	Page<Articulo> findAll(Pageable pageable,@Param("cia") String cia, @Param("cat") String cat);
 	
 	//METODO QUE NOS DEVUELVE EL ARTICULO CON SU PRECIO,STOCK Y COMPROMISO
-	// @Query(nativeQuery = true, value ="SELECT A.NO_ARTI,A.DESCRIPCION,A.MEDIDA,A.MARCA,B.DESCRIPCION LINEA,C.DESCRIPCION SUBLINEA,D.DESCRIPCION FAMILIA, INVE.P_FILTRAR_PRECIOS_LISTA(A.NO_CIA,'F8',A.NO_ARTI) PRECIO, Inve.F_Saldo_Articulo(A.NO_CIA, '1L001', A.NO_ARTI, SysDate) SG, INVE.F_Saldo_Comprometido(A.NO_CIA, A.NO_ARTI, null, '1L001', Null) SC FROM ARINDA1 A, ARINCA B, Arincat C, Arinfa D WHERE A.NO_CIA = :cia AND A.TIPO_ARTI = :cat AND B.NO_CIA = A.NO_CIA AND B.TIPO = A.TIPO_ARTI AND B.CODIGO = A.CLASE AND C.NO_CIA = A.NO_CIA AND C.TIPO = A.TIPO_ARTI AND C.CLASE = A.CLASE AND C.CODIGO = A.CATEGORIA AND D.NO_CIA = A.NO_CIA AND D.TIPO = A.TIPO_ARTI AND D.CLASE = A.CLASE AND D.CATEGORIA = A.CATEGORIA AND D.CODIGO = A.FAMILIA")
-	// @Query(nativeQuery = true, value = "SELECT NO_ARTI,DESCRIPCION,MEDIDA,MARCA,INVE.P_FILTRAR_PRECIOS_LISTA(:cia,'F8',NO_ARTI) PRECIO,Inve.F_Saldo_Articulo(:cia, '1L001', NO_ARTI, SysDate) STOCK, INVE.F_Saldo_Comprometido(:cia, NO_ARTI, null, '1L001', Null) COMPROMISO FROM INVE.ARINDA1 WHERE NO_CIA = :cia AND TIPO_ARTI = :cat GROUP BY NO_ARTI,DESCRIPCION,MEDIDA,MARCA")
-	// @Query(nativeQuery = true, value = "SELECT * FROM ARINDA1 WHERE NO_CIA = :cia AND TIPO_ARTI = :cat")
-	@Query(value = "SELECT NO_ARTI,DESCRIPCION,MEDIDA,MARCA,INVE.P_FILTRAR_PRECIOS_LISTA(:cia,'F8',NO_ARTI) PRECIO,Inve.F_Saldo_Articulo(:cia, '1L001', NO_ARTI, SysDate) STOCK, INVE.F_Saldo_Comprometido(:cia, NO_ARTI, null, '1L001', Null) COMPROMISO FROM INVE.ARINDA1 WHERE NO_CIA = :cia AND TIPO_ARTI = :cat",
-		   countQuery = "SELECT count(*) FROM INVE.ARINDA1 WHERE NO_CIA = :cia AND TIPO_ARTI = :cat",
+	@Query(value = "SELECT NO_ARTI,DESCRIPCION,MEDIDA,MARCA,INVE.P_FILTRAR_PRECIOS_LISTA(:cia,'F8',NO_ARTI) PRECIO,Inve.F_Saldo_Articulo(:cia, '1L001', NO_ARTI, SysDate) STOCK, INVE.F_Saldo_Comprometido(:cia, NO_ARTI, null, '1L001', Null) COMPROMISO FROM INVE.ARINDA1 WHERE NO_CIA = :cia AND TIPO_ARTI = :cat AND 0 < Inve.F_Saldo_Articulo(:cia, '1L001', NO_ARTI, SysDate)",
+		   countQuery = "SELECT count(*) FROM INVE.ARINDA1 WHERE NO_CIA = :cia AND TIPO_ARTI = :cat AND 0 < Inve.F_Saldo_Articulo(:cia, '1L001', NO_ARTI, SysDate)",
 		   nativeQuery = true)
 	Page<Object> pagArtiPreStock(Pageable pageable,@Param("cia") String cia, @Param("cat") String cat);
+	
+	// METODO QUE NOS PERMITE BUSCAR UN ARTICULO CON PRECIO POR NOMBRE DEL ARTICULO (PAGINACION)
+	@Query(value = "SELECT NO_ARTI,DESCRIPCION,MEDIDA,MARCA,INVE.P_FILTRAR_PRECIOS_LISTA(:cia,'F8',NO_ARTI) PRECIO,Inve.F_Saldo_Articulo(:cia, '1L001', NO_ARTI, SysDate) STOCK, INVE.F_Saldo_Comprometido(:cia, NO_ARTI, null, '1L001', Null) COMPROMISO FROM INVE.ARINDA1 WHERE NO_CIA = :cia AND TIPO_ARTI = :cat AND DESCRIPCION LIKE '%:desc%'",
+			   countQuery = "SELECT count(*) FROM INVE.ARINDA1 WHERE NO_CIA = :cia AND TIPO_ARTI = :cat AND DESCRIPCION LIKE '%:desc%'",
+			   nativeQuery = true)
+	Page<Object> pagArtiPreStockAndDesc(Pageable pageable,@Param("cia") String cia, @Param("cat") String cat, @Param("desc") String desc);
+	
+	
+	// METODO QUE NOS PERMITE BUSCAR UN ARTICULO POR CODIGO
+	@Query(value = "SELECT NO_ARTI,DESCRIPCION,MEDIDA,MARCA,INVE.P_FILTRAR_PRECIOS_LISTA(:cia,'F8',NO_ARTI) PRECIO,Inve.F_Saldo_Articulo(:cia, '1L001', NO_ARTI, SysDate) STOCK, INVE.F_Saldo_Comprometido(:cia, NO_ARTI, null, '1L001', Null) COMPROMISO FROM INVE.ARINDA1 WHERE NO_CIA = :cia AND NO_ARTI = :cod AND TIPO_ARTI = :cat AND 0 < Inve.F_Saldo_Articulo(:cia, '1L001', NO_ARTI, SysDate)",
+		   countQuery = "SELECT count(*) FROM INVE.ARINDA1 WHERE NO_CIA = :cia AND TIPO_ARTI = :cat AND NO_ARTI = :cod AND 0 < Inve.F_Saldo_Articulo(:cia, '1L001', NO_ARTI, SysDate)",
+		   nativeQuery = true)
+	Page<Object> pagArtiPreStockAndCod(Pageable pageable,@Param("cia") String cia, @Param("cat") String cat, @Param("cod") String cod);
 	
 	@Query(nativeQuery = true , value = "SELECT INVE.P_FILTRAR_PRECIOS_LISTA(:cia,'F8',:arti) PRECIO FROM DUAL")
 	String precioArtiCia(@Param("cia") String cia, @Param("arti") String arti);
@@ -49,7 +59,7 @@ public interface IArticuloDao extends PagingAndSortingRepository<Articulo,IdArti
 	List<Articulo> findCodigoArticulo(@Param("cia") String cia,@Param("cod") String cod);
 	
    //VAMOS A TRAER TODOS LOS ARTICULOS SEGUN LA DESCRIPCION DEL ARTICULO
-	@Query("SELECT a FROM Articulo a WHERE a.idArti.cia = :cia AND a.descripcion LIKE %:dscri%")
+	@Query("SELECT a FROM Articulo a WHERE a.idArti.cia = :cia AND a.catalogo.idCata.codigo = '1' AND a.descripcion LIKE %:dscri%")
 	List<Articulo> findDescripcionArticulo(@Param("cia") String cia,@Param("dscri") String dscri);
 	
 }

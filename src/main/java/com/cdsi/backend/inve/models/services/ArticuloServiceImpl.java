@@ -115,5 +115,15 @@ public class ArticuloServiceImpl implements IArticuloService {
 		return artiDao.pagArtiPreStock(pageable, cia, cat);
 	}
 
+	@Override
+	public Page<Object> pagArtiPreStockAndDesc(Pageable pageable, String cia, String cat, String desc) {
+		return artiDao.pagArtiPreStockAndDesc(pageable, cia, cat, desc);
+	}
+
+	@Override
+	public Page<Object> pagArtiPreStockAndCodigo(Pageable pageable, String cia, String cat, String cod) {
+		return artiDao.pagArtiPreStockAndCod(pageable, cia, cat, cod);
+	}
+
 
 }

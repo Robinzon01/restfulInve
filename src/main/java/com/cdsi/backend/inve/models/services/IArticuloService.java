@@ -27,6 +27,12 @@ public interface IArticuloService {
     // PAGINACION DE ARTICULOS CON SU PRECIO Y STOCK
     Page<Object> pagArtiPrecStock(Pageable pageable,String cia,String cat);
     
+     // PAGINACION DE ARTICULOS CON SU PRECIO Y STOCK Y LIKE DESCRIPCION
+    Page<Object> pagArtiPreStockAndDesc(Pageable pageable,String cia,String cat,String desc);
+    
+ // PAGINACION DE ARTICULOS CON SU PRECIO Y STOCK Y CODIGO
+    Page<Object> pagArtiPreStockAndCodigo(Pageable pageable,String cia,String cat,String cod);
+    
     //Pagination
     Page<Articulo> findAllArti(Pageable pageable,String cia,String codigo);
     
@@ -42,6 +48,6 @@ public interface IArticuloService {
     //SALDO DE ARTICULO
     String saldoArticulo(String cia, String arti);
     
-  //SALDO DE ARTICULO
+    //SALDO DE ARTICULO
     String saldoComprometido(String cia, String arti);
 }
