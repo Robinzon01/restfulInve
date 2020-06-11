@@ -88,41 +88,18 @@ public class Articulo implements Serializable {
 		
 	@Column(name = "TIPO_AFECTACION")
 	private String tipoAfectacion;
-	/*
-	@Column(name = "STK_MINIMO")
-	private int minino;
 	
-	@Column(name = "STK_MAXIMO")
-	private int maximo;
+	@Column(name = "IMAGEN_ARTI")
+	private String foto;
 	
-	@Column(name = "COSTO_UNI")
-	private Double precio;
-	
-	
-	public Double getPrecio() {
-		return precio;
+	public String getFoto() {
+		return foto;
 	}
 
-	public void setPrecio(Double precio) {
-		this.precio = precio;
+	public void setFoto(String foto) {
+		this.foto = foto;
 	}
 
-	public int getMinino() {
-		return minino;
-	}
-
-	public void setMinino(int minino) {
-		this.minino = minino;
-	}
-    
-	public int getMaximo() {
-		return maximo;
-	}
-
-	public void setMaximo(int maximo) {
-		this.maximo = maximo;
-	}
-	*/
 	public IdArticulo getIdArti() {
 		return idArti;
 	}
