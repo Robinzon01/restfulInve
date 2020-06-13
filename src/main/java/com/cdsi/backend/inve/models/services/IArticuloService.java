@@ -14,12 +14,15 @@ public interface IArticuloService {
 
 	Articulo createArticulo(Articulo articulo);
 
-	Articulo updateArticulo(IdArticulo objIdAr, Articulo objA);
+	Articulo updateArticulo(String cia, String cod, Articulo objA);
 
 	void deleteArticulo(IdArticulo objIdAr);
 	
 	//BUSCAR UN ARTICULO
 	Articulo findArticulo(IdArticulo objIdAr);
+	
+	//BUSCAR UN ARTICULO POR SU CIA Y CODIGO
+	Articulo findByCiaAndCod(String cia, String cod);
 	
 	//Pagination
     Page<Articulo> findAll(Pageable pageable,String cia,String cat);

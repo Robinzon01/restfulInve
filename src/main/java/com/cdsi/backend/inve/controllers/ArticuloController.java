@@ -11,13 +11,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,14 +28,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cdsi.backend.inve.models.entity.Articulo;
-import com.cdsi.backend.inve.models.entity.IdArticulo;
 import com.cdsi.backend.inve.models.services.IArticuloService;
 
 @CrossOrigin(origins = {"*"})
@@ -48,6 +45,30 @@ public class ArticuloController {
 	private IArticuloService artiServi;
 	
 	private final Logger log = LoggerFactory.getLogger(ArticuloController.class);
+	
+	@GetMapping("/show/{cia}/{cod}")
+	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+	public ResponseEntity<?> show(@PathVariable("cia") String cia, @PathVariable("cod") String cod) {
+		
+		Articulo articulo = null;
+		Map<String, Object> response = new HashMap<>();
+		// log.info("cia : "+cia+"  ,cod : "+cod);
+		try {
+			articulo = artiServi.findByCiaAndCod(cia, cod);
+		//	log.info("Articulo : "+articulo);
+		} catch(DataAccessException e) {
+			response.put("mensaje", "Error al realizar la consulta en la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if(articulo == null) {
+			response.put("mensaje", "El articulo con el id: ".concat(cod.concat(" no existe en la base de datos!")));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<Articulo>(articulo, HttpStatus.OK);
+	}
 	
 	//METODO QUE NOS PERMITE BUSCAR POR ARTICULO
   	@GetMapping("/list/desc/{cia}/{desc}")
@@ -101,9 +122,9 @@ public class ArticuloController {
   	// SUBIR UNA IMAGEN DEL ARTICULO
   	@PostMapping("/upload")
   	@Secured({"ROLE_ADMIN"})
-  	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @Valid @RequestBody IdArticulo idArti ) {
+  	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("cia") String cia, @RequestParam("cod") String cod ) {
   		Map<String, Object> response = new HashMap<>();
-  		Articulo articulo = artiServi.findArticulo(idArti);
+  		Articulo articulo = artiServi.findByCiaAndCod(cia, cod);
   		if(!archivo.isEmpty()) {
   			String nombreArchivo = UUID.randomUUID().toString()+"_"+archivo.getOriginalFilename().replace(" ","");
   			Path rutaArchivo = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
@@ -112,7 +133,7 @@ public class ArticuloController {
 				Files.copy(archivo.getInputStream(),rutaArchivo);
 			} catch (IOException e) {
 				response.put("mensaje", "Error al subir la imagen : "+nombreArchivo);
-				response.put("error", e.getMessage().concat(": ").concat(e.getCause().getMessage()));
+				response.put("error", e.getMessage().concat(":+ ").concat(e.getCause().getMessage()));
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
   			//VAMOS A ELIMINAR LA IMAGEN REPETIDAS
@@ -126,9 +147,9 @@ public class ArticuloController {
   			}
   			
   			articulo.setFoto(nombreArchivo);
-  			artiServi.createArticulo(articulo);
-  			
-  			response.put("articulo",archivo);
+  			Articulo objArti = artiServi.updateArticulo(cia, cod, articulo);
+  			// log.info("ACTUALIZO OOOOOOOOOOOO");
+  			response.put("articulo",objArti);
   			response.put("mensaje","Has subido correctamente la imagen : "+nombreArchivo);
   			
   		}
@@ -136,7 +157,7 @@ public class ArticuloController {
   	}
   	// METODO QUE NOS PERMITE MOSTRAR LA IMAGEN DE LA FOTO
   	@GetMapping("/upload/img/{nombreFoto:.+}")
-  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+  	// @Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
   	public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto){
   		Path rutaFoto = Paths.get("uploads").resolve(nombreFoto).toAbsolutePath();
   		log.info(rutaFoto.toString());

@@ -3,10 +3,13 @@ package com.cdsi.backend.inve.models.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cdsi.backend.inve.models.dao.IArticuloDao;
 import com.cdsi.backend.inve.models.entity.Articulo;
@@ -18,8 +21,10 @@ public class ArticuloServiceImpl implements IArticuloService {
 	
 	@Autowired
 	private IArticuloDao artiDao;
-
+	private final Logger log = LoggerFactory.getLogger(ArticuloServiceImpl.class);
+	
 	@Override
+	@Transactional(readOnly = true)
 	public List<Articulo> getAllArticulos() {
 		List<Articulo> objAs = new ArrayList<Articulo>();
 		artiDao.findAll().iterator().forEachRemaining(objAs::add);
@@ -27,14 +32,16 @@ public class ArticuloServiceImpl implements IArticuloService {
 	}
 
 	@Override
+	@Transactional
 	public Articulo createArticulo(Articulo articulo) {
 		return artiDao.save(articulo);
 	}
 
 	@Override
-	public Articulo updateArticulo(IdArticulo objIdAr, Articulo articulo) {
+	@Transactional
+	public Articulo updateArticulo(String cia, String cod, Articulo articulo) {
 		// TODO Auto-generated method stub
-		Articulo objA = findArticulo(objIdAr);
+		Articulo objA = findByCiaAndCod(cia, cod);
 		objA.setIdArti (articulo.getIdArti());
 		objA.setCatalogo (articulo.getCatalogo());
 		objA.setLinea( articulo.getLinea() );
@@ -55,7 +62,7 @@ public class ArticuloServiceImpl implements IArticuloService {
 		objA.setIndCodBarra(articulo.getIndCodBarra());
 		objA.setImpVen(articulo.getImpVen());
 		objA.setTipoAfectacion(articulo.getTipoAfectacion());
-		
+		objA.setFoto(articulo.getFoto());
 		return artiDao.save(objA);
 	}
 
@@ -69,7 +76,6 @@ public class ArticuloServiceImpl implements IArticuloService {
 	public Articulo findArticulo(IdArticulo objIdAr) {
 		return artiDao.findByIdArti(objIdAr);
 	}
-
 
 	@Override
 	public Page<Articulo> findAll(Pageable pageable,String cia,String cat) {
@@ -123,6 +129,13 @@ public class ArticuloServiceImpl implements IArticuloService {
 	@Override
 	public Page<Object> pagArtiPreStockAndCodigo(Pageable pageable, String cia, String cat, String cod) {
 		return artiDao.pagArtiPreStockAndCod(pageable, cia, cat, cod);
+	}
+	// BUSCAR  ARTICULOS POR CIA Y CODIGO
+	@Override
+    @Transactional(readOnly = true)
+	public Articulo findByCiaAndCod(String cia, String cod) {
+		log.info("desde artiServiImple cia : "+cia+" ,cod : "+cod);
+		return artiDao.buscarArtiCiaAndCod(cia, cod);
 	}
 
 

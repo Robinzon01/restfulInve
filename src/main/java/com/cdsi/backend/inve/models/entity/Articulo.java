@@ -89,7 +89,7 @@ public class Articulo implements Serializable {
 	@Column(name = "TIPO_AFECTACION")
 	private String tipoAfectacion;
 	
-	@Column(name = "IMAGEN_ARTI")
+	// @Column(name = "RUTA_ARCHIVO_ARTI")
 	private String foto;
 	
 	public String getFoto() {
