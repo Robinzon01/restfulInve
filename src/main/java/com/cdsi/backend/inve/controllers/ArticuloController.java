@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,7 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cdsi.backend.inve.models.entity.Articulo;
 import com.cdsi.backend.inve.models.services.IArticuloService;
 
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = {"*"}, methods= {RequestMethod.GET,RequestMethod.POST})
 @RestController
 @RequestMapping("/api/arti")
 public class ArticuloController {
@@ -119,9 +120,10 @@ public class ArticuloController {
   	public String articuloComprometido(@PathVariable("cia") String cia, @PathVariable("arti") String arti ){
   		return artiServi.saldoComprometido(cia, arti);
   	}
+  	
   	// SUBIR UNA IMAGEN DEL ARTICULO
   	@PostMapping("/upload")
-  	@Secured({"ROLE_ADMIN"})
+  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
   	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("cia") String cia, @RequestParam("cod") String cod ) {
   		Map<String, Object> response = new HashMap<>();
   		Articulo articulo = artiServi.findByCiaAndCod(cia, cod);
@@ -148,7 +150,8 @@ public class ArticuloController {
   			
   			articulo.setFoto(nombreArchivo);
   			Articulo objArti = artiServi.updateArticulo(cia, cod, articulo);
-  			// log.info("ACTUALIZO OOOOOOOOOOOO");
+  			log.info("ACTUALIZO OOOOOOOOOOOO");
+  			log.info("El articulo cambio de imagen : "+objArti.getFoto());
   			response.put("articulo",objArti);
   			response.put("mensaje","Has subido correctamente la imagen : "+nombreArchivo);
   			
@@ -156,8 +159,8 @@ public class ArticuloController {
   		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
   	}
   	// METODO QUE NOS PERMITE MOSTRAR LA IMAGEN DE LA FOTO
-  	@GetMapping("/upload/img/{nombreFoto:.+}")
-  	// @Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+  	@GetMapping("/uploads/img/{nombreFoto:.+}")
+  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
   	public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto){
   		Path rutaFoto = Paths.get("uploads").resolve(nombreFoto).toAbsolutePath();
   		log.info(rutaFoto.toString());
