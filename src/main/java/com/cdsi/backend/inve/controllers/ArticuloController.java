@@ -23,7 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+//import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cdsi.backend.inve.dto.StockLibroDTO;
 import com.cdsi.backend.inve.models.entity.Articulo;
 import com.cdsi.backend.inve.models.services.IArticuloService;
 
@@ -48,7 +49,7 @@ public class ArticuloController {
 	private final Logger log = LoggerFactory.getLogger(ArticuloController.class);
 	
 	@GetMapping("/show/{cia}/{cod}")
-	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+	//@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
 	public ResponseEntity<?> show(@PathVariable("cia") String cia, @PathVariable("cod") String cod) {
 		
 		Articulo articulo = null;
@@ -73,14 +74,14 @@ public class ArticuloController {
 	
 	//METODO QUE NOS PERMITE BUSCAR POR ARTICULO
   	@GetMapping("/list/desc/{cia}/{desc}")
-  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+  	//@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
   	public List<Articulo> listaArtiDesc(@PathVariable("cia") String cia, @PathVariable("desc") String desc ){
   		return artiServi.likeDescripArti(cia, desc);
   	}
 	
 	//METODO QUE ENVIA UNA PAGINACION DE ARTICULO y DESCRIPCION
   	@GetMapping("/listd/page/{cia}/{desc}/{page}")
-  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+  	//@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
   	public Page<Object> pagiArtiPrecAndDesc(@PathVariable("cia") String cia,@PathVariable("desc") String desc, @PathVariable("page") Integer page ){
   		Pageable pageable = PageRequest.of(page, 8);
   		return artiServi.pagArtiPreStockAndDesc(pageable, cia, "1", desc);
@@ -88,7 +89,7 @@ public class ArticuloController {
   	
     //METODO QUE ENVIA UNA PAGINACION DE ARTICULO y CODIGO
   	@GetMapping("/listc/page/{cia}/{cod}/{page}")
-  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+  	//@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
   	public Page<Object> pagiArtiPrecAndCodigo(@PathVariable("cia") String cia,@PathVariable("cod") String cod, @PathVariable("page") Integer page ){
   		Pageable pageable = PageRequest.of(page, 8);
   		return artiServi.pagArtiPreStockAndCodigo(pageable, cia, "1", cod);
@@ -96,7 +97,7 @@ public class ArticuloController {
   	
      //METODO QUE ENVIA UNA PAGINACION DE ARTICULO
   	@GetMapping("/list/page/{cia}/{page}")
-  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+  	//@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
   	public Page<Object> pagiArticulos(@PathVariable("cia") String cia, @PathVariable("page") Integer page ){
   		Pageable pageable = PageRequest.of(page, 8);
   		return artiServi.pagArtiPrecStock(pageable, cia,"1");
@@ -104,26 +105,26 @@ public class ArticuloController {
   	
     //METODO QUE NOS DEVUELVE EL PRECIO DEL ARTICULO
   	@GetMapping("/precio/{cia}/{arti}")
-  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+  	//@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
   	public String precioArticulo(@PathVariable("cia") String cia, @PathVariable("arti") String arti ){
   		return artiServi.precioArticulo(cia, arti);
   	}
     //METODO QUE NOS DEVUELVE EL STOCK DEL ARTICULO
   	@GetMapping("/stkarti/{cia}/{arti}")
-  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+  	//@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
   	public String saldoArticulo(@PathVariable("cia") String cia, @PathVariable("arti") String arti ){
   		return artiServi.saldoArticulo(cia, arti);
   	}
     //METODO QUE NOS DEVUELVE EL STOCK COMPROMETIDO DEL ARTICULO
   	@GetMapping("/comparti/{cia}/{arti}")
-  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+  	//@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
   	public String articuloComprometido(@PathVariable("cia") String cia, @PathVariable("arti") String arti ){
   		return artiServi.saldoComprometido(cia, arti);
   	}
   	
   	// SUBIR UNA IMAGEN DEL ARTICULO
   	@PostMapping("/upload")
-  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+  	//@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
   	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("cia") String cia, @RequestParam("cod") String cod ) {
   		Map<String, Object> response = new HashMap<>();
   		Articulo articulo = artiServi.findByCiaAndCod(cia, cod);
@@ -160,7 +161,7 @@ public class ArticuloController {
   	}
   	// METODO QUE NOS PERMITE MOSTRAR LA IMAGEN DE LA FOTO
   	@GetMapping("/uploads/img/{nombreFoto:.+}")
-  	@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
+  	//@Secured({"ROLE_ADMIN","ROLE_VENDEDOR","ROLE_USER"})
   	public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto){
   		Path rutaFoto = Paths.get("uploads").resolve(nombreFoto).toAbsolutePath();
   		log.info(rutaFoto.toString());

@@ -14,7 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+//import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +38,7 @@ public class UsuarioRestController {
 	
 	//METODO QUE ENVIA UNA PAGINACION DE USUARIO
   	@GetMapping("/list/page/{cia}/{page}")
-  	@Secured("ROLE_ADMIN")
+  //	@Secured("ROLE_ADMIN")
   	public Page<Usuario> paginacion(@PathVariable("cia") String cia, @PathVariable("page") Integer page ){
   		Pageable pageable = PageRequest.of(page, 5);
   		return userService.findAllPage(pageable, cia);
@@ -46,7 +46,7 @@ public class UsuarioRestController {
 	
 	//METODO POST
 	@PostMapping("/save")
-	@Secured("ROLE_ADMIN")
+	//@Secured("ROLE_ADMIN")
     public ResponseEntity<?> create(@Valid @RequestBody Usuario usuario, BindingResult result) {
 		
 		Usuario usuarioNew = null;

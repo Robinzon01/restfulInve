@@ -3,7 +3,7 @@ package com.cdsi.backend.inve.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
+//import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +21,7 @@ public class RolRestController {
 	private IRolService rolServi;
 	
 	@GetMapping(value = "/list")
-	@Secured("ROLE_ADMIN")
+	//@Secured("ROLE_ADMIN")
 	public List<Role> rolesUnicos() {
 		return rolServi.rolesUnicos(); 
 	}

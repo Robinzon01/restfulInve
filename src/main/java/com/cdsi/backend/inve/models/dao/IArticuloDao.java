@@ -9,6 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.cdsi.backend.inve.dto.StockLibroDTO;
 import com.cdsi.backend.inve.models.entity.Articulo;
 import com.cdsi.backend.inve.models.entity.IdArticulo;
 

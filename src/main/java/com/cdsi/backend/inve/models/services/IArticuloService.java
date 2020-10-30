@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.cdsi.backend.inve.dto.StockLibroDTO;
 import com.cdsi.backend.inve.models.entity.Articulo;
 import com.cdsi.backend.inve.models.entity.IdArticulo;
 
@@ -33,7 +34,7 @@ public interface IArticuloService {
      // PAGINACION DE ARTICULOS CON SU PRECIO Y STOCK Y LIKE DESCRIPCION
     Page<Object> pagArtiPreStockAndDesc(Pageable pageable,String cia,String cat,String desc);
     
- // PAGINACION DE ARTICULOS CON SU PRECIO Y STOCK Y CODIGO
+    // PAGINACION DE ARTICULOS CON SU PRECIO Y STOCK Y CODIGO
     Page<Object> pagArtiPreStockAndCodigo(Pageable pageable,String cia,String cat,String cod);
     
     //Pagination

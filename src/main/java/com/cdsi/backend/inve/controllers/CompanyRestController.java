@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+//import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +28,7 @@ public class CompanyRestController {
 	private IArfamcService compaService;
 	
 	@GetMapping("/company/{cia}")
-	@Secured("ROLE_USER")
+	//@Secured("ROLE_USER")
 	public ResponseEntity<?> show(@PathVariable String cia) {
 		
 		Arfamc arfamc = null;
@@ -51,7 +51,7 @@ public class CompanyRestController {
 	}
 	
 	@GetMapping(value = "/company/list")
-	@Secured("ROLE_USER")
+	//@Secured("ROLE_USER")
 	public List<Arfamc> listar() {
 		return compaService.getAllArfamc();
 	}

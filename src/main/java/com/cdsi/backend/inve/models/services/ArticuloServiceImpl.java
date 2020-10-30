@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cdsi.backend.inve.dto.StockLibroDTO;
 import com.cdsi.backend.inve.models.dao.IArticuloDao;
 import com.cdsi.backend.inve.models.entity.Articulo;
 import com.cdsi.backend.inve.models.entity.IdArticulo;
