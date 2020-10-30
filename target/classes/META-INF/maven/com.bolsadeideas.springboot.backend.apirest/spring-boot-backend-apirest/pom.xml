@@ -59,17 +59,17 @@
 			<version>1.0.9.RELEASE</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
+		<!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->		
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>
 			<artifactId>jaxb-runtime</artifactId>
 		</dependency>
 		
-		<dependency>
+		 <dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc</artifactId>
 			<version>7</version>
-		</dependency>
+		</dependency> 
 
 	</dependencies>
 
